@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from clustering import *
 
 ## Get user input from command line
@@ -21,8 +22,12 @@ data_fp = "../data/"
 cho_fp = data_fp + "cho.txt"
 iyer_fp = data_fp + "iyer.txt"
 
-cho_data = np.loadtxt(cho_fp)
-iyer_data = np.loadtxt(iyer_fp)
+# cho_data = np.loadtxt(cho_fp)
+# iyer_data = np.loadtxt(iyer_fp)
+
+cho_data = pd.read_csv(cho_fp, header=None, sep='\t')
+iyer_data = pd.read_csv(cho_fp, header=None, sep='\t')
+
 # print(iyer_data)
 
 if alg == "1":
