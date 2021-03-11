@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from clustering import *
+from kmeans import *
 
 ## Get user input from command line
 # print("Welcome to my clustering alg!")
@@ -32,10 +32,12 @@ iyer_df = iyer_df[iyer_df[1] > 0]
 cho_arr = cho_df.drop(columns=[0,1]).to_numpy()
 iyer_arr = iyer_df.drop(columns=[0,1]).to_numpy()
 
-print(cho_arr)
-print(iyer_arr)
+# print(cho_arr)
+# print(iyer_arr)
 
-alg = Kmeans(iyer_arr)
-# alg.info()
-# elif inpt == "2":
-#     spectral(cho_data)
+cho_kmeans = Kmeans(cho_arr)
+# cho_kmeans.info()
+cho_labels = cho_kmeans.run()
+print(cho_labels)
+# iyer_kmeans = Kmeans(iyer_arr, 10)
+# iyer_kmeans.info()
