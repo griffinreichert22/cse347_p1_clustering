@@ -14,14 +14,33 @@ def match_labels(labels, truth):
 
     # match_count = np.zeros_like(np.unique(truth))
     # print(match_count)
+    # count_map = []
+    # label_map = np.zeros_like(np.unique(labels))
     for l in np.unique(labels):
-
         # get array of size [1 ... t] where each position is the count of times label l corresponded to value t
         match_count = [np.sum((labels==l)*(truth==t)) for t in np.unique(truth)]
-        print(match_count)
-        matched[labels==l] = np.unique(truth)[np.argmax(match_count)]
+        # count_map.append(match_count)
         # print(matched)
+        matched[labels==l] = np.unique(truth)[np.argmax(match_count)]
+        # label_map[l] = np.unique(truth)[np.argmax(match_count)]
+    if (np.unique(matched).size != np.unique(truth).size):
+        print("missing a class")
+    # print(label_map)
+    # print(count_map)
     return matched
+
+def plot_cm(labels, truth):
+    # Compute confusion matrix
+    cm = confusion_matrix(cho_truth, cho_labels_match)
+    # Plot confusion matrix
+    plt.imshow(cm,interpolation='none',cmap='Blues')
+    for (i, j), z in np.ndenumerate(cm):
+        plt.text(j, i, z, ha='center', va='center')
+    plt.xlabel("predicted label")
+    plt.ylabel("truth label")
+    plt.show()
+
+
 ## Get user input from command line
 # print("Welcome to my clustering alg!")
 # print("  [1] K-means clustering")
@@ -53,7 +72,8 @@ cho_arr = cho_df.drop(columns=[0,1]).to_numpy()
 iyer_arr = iyer_df.drop(columns=[0,1]).to_numpy()
 
 
-np.random.seed(17)
+# np.random.seed(17)
+np.random.seed(12)
 
 cho_kmeans = Kmeans(cho_arr)
 cho_labels = cho_kmeans.run()
@@ -63,17 +83,9 @@ cho_truth = cho_df[1].to_numpy()
 
 # match labels with ground truth values
 cho_labels_match = match_labels(cho_labels, cho_truth)
+plot_cm(cho_labels_match, cho_truth)
 
-# Compute confusion matrix
-cm = confusion_matrix(cho_truth, cho_labels_match)
 
-# Plot confusion matrix
-plt.imshow(cm,interpolation='none',cmap='Blues')
-for (i, j), z in np.ndenumerate(cm):
-    plt.text(j, i, z, ha='center', va='center')
-plt.xlabel("kmeans label")
-plt.ylabel("truth label")
-plt.show()
 
 # np.random.seed(2)
 
