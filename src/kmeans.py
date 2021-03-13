@@ -3,8 +3,6 @@ import pandas as pd
     
 def calc_dist(a, b):
     return np.linalg.norm(a-b)
-    # return np.sqrt(np.sum((a-b)**2))
-    ## note that np.linalg.norm(a-b) can be used for euclidean distance
 
 # # K-means alg 
 # choose k data points as initial clusters
@@ -79,5 +77,5 @@ class Kmeans:
         labels = np.zeros(self.n_samples).astype('int')
         for c_i, c_idxs in enumerate(self.clusters):
             for i in c_idxs:
-                labels[i] = c_i
+                labels[i] = c_i + 1
         return labels

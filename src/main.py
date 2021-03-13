@@ -1,9 +1,13 @@
 import numpy as np
 import pandas as pd
 from kmeans import *
+from spectral import *
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+import networkx as nx
 
+# float_formatter = lambda x: "%.2f" % x
+np.set_printoptions(precision=3)
 
 def match_labels(labels, truth):
     matched = np.zeros_like(labels)
@@ -31,7 +35,7 @@ def match_labels(labels, truth):
 
 def plot_cm(labels, truth):
     # Compute confusion matrix
-    cm = confusion_matrix(cho_truth, cho_labels_match)
+    cm = confusion_matrix(truth, labels)
     # Plot confusion matrix
     plt.imshow(cm,interpolation='none',cmap='Blues')
     for (i, j), z in np.ndenumerate(cm):
@@ -71,9 +75,9 @@ iyer_df = iyer_df[iyer_df[1] > 0]
 cho_arr = cho_df.drop(columns=[0,1]).to_numpy()
 iyer_arr = iyer_df.drop(columns=[0,1]).to_numpy()
 
-
-# np.random.seed(17)
-np.random.seed(12)
+### CHO KMEANS ###
+"""np.random.seed(17)
+# np.random.seed(12)
 
 cho_kmeans = Kmeans(cho_arr)
 cho_labels = cho_kmeans.run()
@@ -83,7 +87,31 @@ cho_truth = cho_df[1].to_numpy()
 
 # match labels with ground truth values
 cho_labels_match = match_labels(cho_labels, cho_truth)
-plot_cm(cho_labels_match, cho_truth)
+plot_cm(cho_labels, cho_truth)
+
+print("original labels")
+print(cho_labels)
+print("matched labels")
+print(cho_labels_match)"""
+
+### CHO SPECTRAL ###
+# cho_spec = Spectral(cho_arr)
+X = np.array([
+    [1, 3], 
+    [2, 1], 
+    [3, 2], 
+    [7, 8], 
+    [9, 8],
+    [8, 7], 
+    [13, 14],
+    [14, 14], 
+    [15, 16]
+])
+x_spec = Spectral(X)
+# plt.scatter(X[:, 0], X[:, 1])
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.show()
 
 
 
