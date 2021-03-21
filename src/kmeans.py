@@ -26,15 +26,6 @@ class Kmeans:
         # store mean feature for each centroid
         self.centroids = []
         self.n_samples, self.n_features = self.data.shape
-    
-    # prints info to terminal
-    def info(self):
-        print("Printing info for kmeans")
-        print("k: " + str(self.k))
-        print("clust:")
-        print(self.clusters)
-        print("data")
-        print(self.data)
 
     def run(self):
         print("running kmeans...")
