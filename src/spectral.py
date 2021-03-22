@@ -18,7 +18,7 @@ class Spectral:
         # create similarity matrix (NxN) - distances from one point to another
         S = np.zeros((self.n_samples, self.n_samples))
         for i in range(self.n_samples):
-            for j in range(self.n_samples):
+            for j in range(i, self.n_samples):
                 # when i == j distance is 0
                 dist = 0
                 if i != j:
@@ -35,13 +35,6 @@ class Spectral:
         # set a threshold distance, create adjacency matrix A (NxN)
         A = np.where(S < q, 1, 0)
         # print(A)
-        ## trying to draw the graph
-        # G = nx.from_numpy_matrix(np.array(A))  
-        # pos = nx.spring_layout(G)
-        # nx.draw_networkx_nodes(G, pos)
-        # nx.draw_networkx_labels(G, pos)
-        # nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
-        # plt.show()
 
         np.fill_diagonal(A, 0)
         # find degree matrix by summing connections of each node in A
@@ -76,12 +69,12 @@ class Spectral:
         # print(eig_difs)
         # print(np.arange(len(eig_difs)))
         k = np.argmax(eig_difs)
-        print(f'k: {k}')
+        # print(f'k: {k}')
 
         # Find index of first nonzero eigenvector
         i = np.where(eig_vals > 0.00001)[0][0]
-        print(f'i: {i}')
-        print(f'n: {len(eig_vals)}')
+        # print(f'i: {i}')
+        # print(f'n: {len(eig_vals)}')
         k_eigs = eig_vecs[:, i:(k+i)]
         # print(k_eigs)
 

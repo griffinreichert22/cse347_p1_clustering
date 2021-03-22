@@ -4,7 +4,9 @@ from kmeans import *
 from spectral import *
 from sklearn.metrics import confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
-import networkx as nx
+
+# sklearn clustering methods used for comparison
+from sklearn.cluster import KMeans, SpectralClustering
 
 np.set_printoptions(precision=3)
 
@@ -84,92 +86,73 @@ if inpt != 'q':
     iyer_truth = iyer_df[1].to_numpy()
 
     cho_pred = []
+    # cho_sklearn = []
     iyer_pred = []
+    # iyer_sklearn = []
     # get kmeans labels
     if inpt == '1':
-        print("K-MEANS CLUSTERING")
+        print("\nK-MEANS CLUSTERING")
         np.random.seed(23)
         cho_kmeans = Kmeans(cho_arr)
         cho_pred = cho_kmeans.run()
+        # cho_sklearn = KMeans(n_clusters=5, random_state=0).fit(cho_arr).labels_
+        
         np.random.seed(22)
         iyer_kmeans = Kmeans(iyer_arr, k=10)
         iyer_pred = iyer_kmeans.run()
+        # iyer_sklearn = KMeans(n_clusters=10, random_state=0).fit(iyer_arr).labels_
+
     # get spectral labels
     elif inpt == '2':
-        print("SPECTRAL CLUSTERING")
+        print("\nSPECTRAL CLUSTERING")
         np.random.seed(49)
         cho_spec = Spectral(cho_arr, 49)
         cho_pred = cho_spec.run()
+        # cho_sklearn = SpectralClustering(n_clusters=5, random_state=0).fit(cho_arr).labels_
+        
         np.random.seed(22)
         iyer_spec = Spectral(iyer_arr, 90)
         iyer_pred = iyer_spec.run()
-    
+        # iyer_sklearn = SpectralClustering(n_clusters=10, random_state=0).fit(iyer_arr).labels_
 
+    cho_matched = match_labels(cho_pred, cho_truth)
+    # cho_sklearn = match_labels(cho_sklearn, cho_truth)
     cho_pred_wss = internal_index(cho_arr, cho_pred)
     cho_truth_wss = internal_index(cho_arr, cho_truth)
-    cho_matched = match_labels(cho_pred, cho_truth)
-    cho_purity = do_confusion_matrix(cho_matched, cho_truth, True)
-    print("\n__ CHO __")
-    print(f"pred  wss: {cho_pred_wss:.3f}")
-    print(f"truth wss: {cho_truth_wss:.3f}")
-    print(f"purity: {cho_purity:.5f}")
+    # cho_sklearn_wss = internal_index(cho_arr, cho_sklearn)
+    cho_purity = do_confusion_matrix(cho_matched, cho_truth)
+    # cho_sklearn_purity = do_confusion_matrix(cho_sklearn, cho_truth)
+    # # Uncomment to plot confusion matrix
+    # cho_purity = do_confusion_matrix(cho_matched, cho_truth, True)
+    print("\n___ CHO ___")
+    print("Internal Index:")
+    print(f" pred wss:    {cho_pred_wss:.3f}")
+    print(f" truth wss:   {cho_truth_wss:.3f}")
+    # print(f" sklearn wss: {cho_sklearn_wss:.3f}")
+
+    print("External Index")
+    print(f" pred purity:    {cho_purity:.5f}")
+    # print(f" sklearn purity: {cho_sklearn_purity:.5f}")
     print("Labels:")
     print(cho_matched)
 
 
+    iyer_matched = match_labels(iyer_pred, iyer_truth)
+    # iyer_sklearn = match_labels(iyer_sklearn, iyer_truth)
     iyer_pred_wss = internal_index(iyer_arr, iyer_pred)
     iyer_truth_wss = internal_index(iyer_arr, iyer_truth)
-    iyer_matched = match_labels(iyer_pred, iyer_truth)
-    iyer_purity = do_confusion_matrix(iyer_matched, iyer_truth, True)
+    # iyer_sklearn_wss = internal_index(iyer_arr, iyer_sklearn)
+    iyer_purity = do_confusion_matrix(iyer_matched, iyer_truth)
+    # iyer_sklearn_purity = do_confusion_matrix(iyer_sklearn, iyer_truth)
+    # # Uncomment to plot confusion matrix
+    # iyer_purity = do_confusion_matrix(iyer_matched, iyer_truth, True)
     print("\n__ IYER __")
-    print(f"pred  wss: {iyer_pred_wss:.3f}")
-    print(f"truth wss: {iyer_truth_wss:.3f}")
-    print(f"purity: {iyer_purity:.5f}")
+    print("Internal Index:")
+    print(f" pred wss:    {iyer_pred_wss:.3f}")
+    print(f" truth wss:   {iyer_truth_wss:.3f}")
+    # print(f" sklearn wss: {iyer_sklearn_wss:.3f}")
+    print("External Index")
+    print(f" pred purity:    {iyer_purity:.5f}")
+    # print(f" sklearn purity: {iyer_sklearn_purity:.5f}")
     print("Labels:")
     print(iyer_matched)
-
-    # X = np.array([
-    #     [1, 3], 
-    #     [2, 1], 
-    #     [1, 1],
-    #     [2, 2],
-    #     [3, 2], 
-    #     [7, 8],
-    #     [8, 11],  
-    #     [9, 8],
-    #     [9, 9], 
-    #     [8, 7],
-    #     [12, 15], 
-    #     [13, 14],
-    #     [14, 14], 
-    #     [15, 16], 
-    #     [14, 15]
-    # ])
-
-    # X_truth = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3]
-    # x_spec = Spectral(X)
-    # x_pred = x_spec.run()
-    # x_matched = match_labels(x_pred, X_truth)
-    # print(x_pred)
-
-
-    # plt.scatter(X[:, 0], X[:, 1], c=x_pred)
-    # plt.xlabel('x')
-    # plt.ylabel('y')
-    # plt.show()
-
-
-
-    # np.random.seed(2)
-
-    # iyer_kmeans = Kmeans(iyer_arr, k=10)
-    # iyer_labels = iyer_kmeans.run()
-
-
-    # # match labels with ground truth values
-    # iyer_labels_match = match_labels(iyer_labels, iyer_truth)
-
-    # print(iyer_labels_match - iyer_truth)
-    # iyer_kmeans = Kmeans(iyer_arr, 10)
-    # iyer_kmeans.info()
-

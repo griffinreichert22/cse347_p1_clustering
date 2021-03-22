@@ -62,7 +62,7 @@ class Kmeans:
             # check if algorithm converged
             centroid_dist = [calc_dist(self.centroids[i], old_centroids[i]) for i in range(self.k)]
             if np.sum(centroid_dist) == 0:
-                print("Converged! " + str(it) + " iters")
+                print(f"Converged! {it} iters")
                 break
         # return cluster labels
         labels = np.zeros(self.n_samples).astype('int')
